@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Warm Neutrals with Blue/Red Accents -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey. It starts with a high-level dashboard ("The Big Picture") to provide immediate context. It then drills down into the core issue ("Engine Room Failure") focusing on the investment crisis. Next, it connects this macro problem to the individual ("The Human Cost"), showing the impact on confidence and consumption. A visual flowchart ("The Ripple Effect") synthesizes the entire cause-and-effect chain. Finally, it provides a "Strategic Outlook." This thematic, story-driven structure is more engaging and intuitive for a web user than a linear report, facilitating better understanding of the complex interconnections. -->
+    <!-- Visualization & Content Choices: GDP Trend (Goal: Change -> Line Chart), CPI/PPI Divergence (Goal: Compare -> Multi-Line Chart), Investment Split (Goal: Compare -> Combined Bar/Line Chart), 'Three Horse Carriage' (Goal: Change Composition -> Stacked Bar Chart), Consumer Confidence (Goal: Change -> Area Chart with Threshold Line), Industry Pain Points (Goal: Inform -> Styled HTML Cards with Unicode Icons), Cause-Effect Chain (Goal: Organize/Relate -> HTML/CSS Flowchart). All charts use Chart.js for interactivity and responsiveness. This selection avoids SVG/Mermaid and uses the most effective visualization for each data type to tell the story clearly. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>中国经济轨迹 (2015-2025): 互动式分析报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px_6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.06);
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+        .nav-link.active, .nav-link:hover {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .flowchart-step {
+            border: 2px solid #93c5fd;
+            background-color: #eff6ff;
+            color: #1e3a8a;
+        }
+        .flowchart-arrow {
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex flex-col">
+                    <h1 class="text-xl md:text-2xl font-bold text-slate-800">中国经济轨迹 (2015-2025)</h1>
+                    <p class="text-sm text-slate-500">驾驭结构性转变与行业逆风</p>
+                </div>
+                <nav class="hidden lg:flex items-center space-x-2 text-sm font-medium text-slate-600">
+                    <a href="#macro-dashboard" class="nav-link">宏观仪表盘</a>
+                    <a href="#engine-failure" class="nav-link">引擎换挡</a>
+                    <a href="#human-cost" class="nav-link">消费与信心</a>
+                    <a href="#ripple-effect" class="nav-link">传导路径</a>
+                    <a href="#outlook" class="nav-link">战略展望</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="macro-dashboard" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-slate-900">宏观仪表盘：关键指标速览</h2>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">中国经济已从高速增长平台放缓至5%左右的“新常态”。以下图表揭示了增长放缓、工业承压和投资结构剧变的核心趋势。</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="kpi-card">
+                    <h3 class="font-bold text-lg mb-2 text-slate-700">GDP增速：放缓的轨迹</h3>
+                    <p class="text-sm text-slate-500 mb-4">经济增长进入中速平台，后疫情时代的复苏基础尚不稳固。</p>
+                    <div class="chart-container"><canvas id="gdpGrowthChart"></canvas></div>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="font-bold text-lg mb-2 text-slate-700">价格之谜：CPI与PPI的鸿沟</h3>
+                    <p class="text-sm text-slate-500 mb-4">生产者价格(PPI)持续为负，而消费者价格(CPI)低迷，严重挤压企业利润。</p>
+                    <div class="chart-container"><canvas id="priceIndexChart"></canvas></div>
+                </div>
+                <div class="kpi-card lg:col-span-2">
+                    <h3 class="font-bold text-lg mb-2 text-slate-700">投资的冰与火：房地产 vs. 高技术</h3>
+                    <p class="text-sm text-slate-500 mb-4">固定资产投资增速放缓的核心在于其内部分化：房地产开发投资断崖式下跌，而高技术产业投资逆势上扬。</p>
+                    <div class="chart-container"><canvas id="investmentDivergenceChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="engine-failure" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-slate-900">引擎换挡：“三驾马车”的结构重塑</h2>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">驱动中国经济的“三驾马车”角色发生根本性变化。昔日首要引擎——投资——已然熄火，消费被寄予厚望，但步履蹒跚。</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="kpi-card">
+                    <h3 class="font-bold text-lg mb-2 text-slate-700">对GDP增长的贡献率</h3>
+                    <p class="text-sm text-slate-500 mb-4">消费（蓝色）已成为拉动增长的绝对主力，而投资（灰色）贡献率显著下降。</p>
+                    <div class="chart-container"><canvas id="gdpContributionChart"></canvas></div>
+                </div>
+                <div class="space-y-6">
+                    <div class="p-6 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                        <h4 class="font-bold text-blue-800">消费：步履蹒跚的继任者</h4>
+                        <p class="text-sm text-blue-700">虽贡献率提升，但受制于居民信心不足，复苏缓慢，未能完全承担起拉动经济的重任。</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 border-l-4 border-slate-500 rounded-r-lg">
+                        <h4 class="font-bold text-slate-800">投资：熄火的旧引擎</h4>
+                        <p class="text-sm text-slate-700">房地产投资的崩溃是主要拖累。尽管高技术产业投资增长迅速，但尚不足以对冲旧动能的消退。</p>
+                    </div>
+                     <div class="p-6 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
+                        <h4 class="font-bold text-emerald-800">净出口：韧性十足的稳定器</h4>
+                        <p class="text-sm text-emerald-700">在全球经济逆风中表现出强大韧性，特别是“新三样”产品的出口，成为经济的重要支撑。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="human-cost" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-slate-900">消费与信心：宏观逆风下的微观感受</h2>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">宏观经济的挑战最终传导至微观个体。消费者信心的崩溃和消费降级，是当前经济最真实的写照，在烟酒等行业表现得淋漓尽尽致。</p>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div class="kpi-card lg:col-span-3">
+                    <h3 class="font-bold text-lg mb-2 text-slate-700">消费者信心：断崖式下跌</h3>
+                    <p class="text-sm text-slate-500 mb-4">消费者信心自2022年起急剧下挫并长期处于悲观区间（100以下），形成了抑制消费的“信心陷阱”。</p>
+                    <div class="chart-container"><canvas id="consumerConfidenceChart"></canvas></div>
+                </div>
+                <div class="kpi-card lg:col-span-2">
+                    <h3 class="font-bold text-lg mb-4 text-slate-700">零售终端的挑战</h3>
+                     <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="text-3xl mr-4">🍷</div>
+                            <div>
+                                <h4 class="font-semibold">高端白酒：价格倒挂</h4>
+                                <p class="text-sm text-slate-500">>40%的经销商表示倒挂加剧，渠道利润严重受损。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-3xl mr-4">📦</div>
+                            <div>
+                                <h4 class="font-semibold">渠道库存：积压如山</h4>
+                                <p class="text-sm text-slate-500">行业平均存货周转天数超900天，现金流压力巨大。</p>
+                            </div>
+                        </div>
+                         <div class="flex items-start">
+                            <div class="text-3xl mr-4">🏪</div>
+                            <div>
+                                <h4 class="font-semibold">零售商：利润承压</h4>
+                                <p class="text-sm text-slate-500">>50%的酒类经销商和零售商表示利润空间减少。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-3xl mr-4">🚬</div>
+                            <div>
+                                <h4 class="font-semibold">烟草零售：末端承压</h4>
+                                <p class="text-sm text-slate-500">宏观业绩创纪录，但终端面临客流减少、利润微薄的困境。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ripple-effect" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-slate-900">传导路径：从宏观逆风到微观现实</h2>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">宏观经济的挑战并非孤立事件，而是通过一条清晰的链条传导至微观企业和个人，其起点是房地产市场的结构性崩溃。</p>
+            <div class="kpi-card">
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 p-6">
+                    <div class="flowchart-step p-4 rounded-lg text-center w-48">
+                        <div class="text-3xl mb-2">🏠</div>
+                        <p class="font-bold">房地产市场深度调整</p>
+                    </div>
+                    <div class="text-4xl flowchart-arrow transform md:-rotate-0 rotate-90 font-light">→</div>
+                    <div class="flex flex-col space-y-2 text-center">
+                        <div class="flowchart-step p-3 rounded-lg text-sm">📉 投资引擎熄火 (PPI为负)</div>
+                        <div class="flowchart-step p-3 rounded-lg text-sm">😟 居民财富缩水 (信心下降)</div>
+                        <div class="flowchart-step p-3 rounded-lg text-sm">💰 地方财政承压</div>
+                    </div>
+                    <div class="text-4xl flowchart-arrow transform md:-rotate-0 rotate-90 font-light">→</div>
+                    <div class="flowchart-step p-4 rounded-lg text-center w-48">
+                        <div class="text-3xl mb-2">🛒</div>
+                        <p class="font-bold">终端消费需求疲软</p>
+                    </div>
+                    <div class="text-4xl flowchart-arrow transform md:-rotate-0 rotate-90 font-light">→</div>
+                    <div class="flowchart-step p-4 rounded-lg text-center w-48 bg-red-100 border-red-300 text-red-800">
+                        <div class="text-3xl mb-2">🏪</div>
+                        <p class="font-bold">零售行业困境</p>
+                        <p class="text-xs">(价格倒挂/库存积压)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 text-slate-900">战略展望：风险与机遇</h2>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">中国经济正处在一个关键的转型期。旧的增长模式难以为继，新的增长动能尚在培育之中。对企业而言，这意味着告别过去的舒适区，以更强的韧性、更敏锐的洞察力和更灵活的策略，去适应和驾驭这个新时代。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-8 rounded-lg bg-red-50 border-l-4 border-red-400">
+                    <h3 class="text-xl font-bold mb-3 text-red-800">主要风险 🚨</h3>
+                    <ul class="list-disc list-inside space-y-2 text-red-700">
+                        <li><b>资产负债表衰退：</b>居民和企业持续修复资产负债表而非消费和投资，可能导致长期低增长。</li>
+                        <li><b>“双速经济”固化：</b>高科技领域的繁荣与传统行业的困境脱节，可能加剧社会不平等。</li>
+                    </ul>
+                </div>
+                <div class="p-8 rounded-lg bg-green-50 border-l-4 border-green-400">
+                    <h3 class="text-xl font-bold mb-3 text-green-800">主要机遇 ✨</h3>
+                    <ul class="list-disc list-inside space-y-2 text-green-700">
+                        <li><b>产业升级：</b>向高技术制造业和绿色能源的转型，将创造出新的、高价值的产业链和市场。</li>
+                        <li><b>消费分化：</b>庞大的人口基数和日益分化的消费需求，为能精准定位细分市场的品牌提供了广阔空间。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-16 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">数据来源：中华人民共和国国家统计局、中国酒业协会及其他公开权威报告。</p>
+            <p class="text-xs text-slate-400 mt-2">本互动式报告根据公开数据整理分析，仅供参考。© 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const chartColors = {
+            blue: '#3b82f6',
+            sky: '#0ea5e9',
+            red: '#ef4444',
+            green: '#10b981',
+            slate: '#64748b',
+            blue_bg: 'rgba(59, 130, 246, 0.1)',
+            red_bg: 'rgba(239, 68, 68, 0.1)',
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { font: { family: "'Noto Sans SC', sans-serif" } } },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { family: "'Noto Sans SC', sans-serif" },
+                    titleFont: { family: "'Noto Sans SC', sans-serif" }
+                }
+            },
+            scales: {
+                x: { ticks: { font: { family: "'Noto Sans SC', sans-serif" } }, grid: { display: false } },
+                y: { ticks: { font: { family: "'Noto Sans SC', sans-serif" }, callback: (value) => value + '%' }, grid: { color: '#e2e8f0' } }
+            }
+        };
+
+        const years = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2025 H1'];
+        
+        new Chart(document.getElementById('gdpGrowthChart'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'GDP 增速',
+                    data: [6.9, 6.7, 6.9, 6.6, 6.1, 2.3, 8.1, 3.0, 5.2, 5.3],
+                    borderColor: chartColors.blue,
+                    backgroundColor: chartColors.blue_bg,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: commonChartOptions
+        });
+
+        const priceYears = ['2022.01', '2022.07', '2023.01', '2023.07', '2024.01', '2024.07', '2025.01', '2025.07'];
+        new Chart(document.getElementById('priceIndexChart'), {
+            type: 'line',
+            data: {
+                labels: priceYears,
+                datasets: [{
+                    label: 'CPI 同比涨幅',
+                    data: [0.9, 2.7, 2.1, 0.1, -0.8, 0.3, -0.1, -0.1],
+                    borderColor: chartColors.blue,
+                    tension: 0.3,
+                }, {
+                    label: 'PPI 同比涨幅',
+                    data: [9.1, 4.2, -0.8, -4.4, -2.5, -2.7, -2.8, -3.6],
+                    borderColor: chartColors.red,
+                    tension: 0.3,
+                }]
+            },
+            options: { ...commonChartOptions, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, beginAtZero: false}}}
+        });
+
+        const investmentYears = ['2021', '2022', '2023', '2025 H1'];
+        new Chart(document.getElementById('investmentDivergenceChart'), {
+            type: 'bar',
+            data: {
+                labels: investmentYears,
+                datasets: [{
+                    label: '房地产开发投资增速',
+                    data: [4.4, -10.0, -9.6, -10.1],
+                    backgroundColor: chartColors.red
+                }, {
+                    label: '高技术产业投资增速',
+                    data: [17.1, 18.9, 10.3, 9.5],
+                    backgroundColor: chartColors.sky
+                }, {
+                    type: 'line',
+                    label: '固定资产投资总增速',
+                    data: [4.9, 5.1, 3.0, 2.8],
+                    borderColor: chartColors.slate,
+                    backgroundColor: chartColors.slate,
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: { ...commonChartOptions, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, beginAtZero: false}}}
+        });
+
+        const contributionYears = ['2019', '2021', '2022', '2023'];
+        new Chart(document.getElementById('gdpContributionChart'), {
+            type: 'bar',
+            data: {
+                labels: contributionYears,
+                datasets: [{
+                    label: '最终消费支出',
+                    data: [57.8, 65.4, 32.8, 82.5],
+                    backgroundColor: chartColors.blue,
+                }, {
+                    label: '资本形成总额',
+                    data: [31.2, 13.7, 50.1, 28.9],
+                    backgroundColor: chartColors.slate,
+                }, {
+                    label: '货物和服务净出口',
+                    data: [11.0, 20.9, 17.1, -11.4],
+                    backgroundColor: chartColors.green,
+                }]
+            },
+            options: { ...commonChartOptions, scales: { x: { stacked: true }, y: { ...commonChartOptions.scales.y, stacked: true } } }
+        });
+        
+        const confidenceYears = ['2021.Q1', '2021.Q4', '2022.Q2', '2022.Q4', '2023.Q2', '2023.Q4', '2024.Q2', '2025.Q2'];
+        new Chart(document.getElementById('consumerConfidenceChart'), {
+            type: 'line',
+            data: {
+                labels: confidenceYears,
+                datasets: [{
+                    label: '消费者信心指数',
+                    data: [122.7, 118.1, 86.8, 87.6, 87.2, 87.0, 88.1, 87.9],
+                    borderColor: chartColors.red,
+                    backgroundColor: chartColors.red_bg,
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    ...commonChartOptions.scales,
+                    y: {
+                        ...commonChartOptions.scales.y,
+                        suggestedMin: 80,
+                        suggestedMax: 130,
+                        callback: (value) => value
+                    }
+                },
+                plugins: {
+                   ...commonChartOptions.plugins,
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 100,
+                                yMax: 100,
+                                borderColor: 'rgb(55, 65, 81)',
+                                borderWidth: 2,
+                                borderDash: [6, 6],
+                                label: {
+                                    content: '中性线',
+                                    enabled: true,
+                                    position: 'end',
+                                    font: { family: "'Noto Sans SC', sans-serif" }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
