@@ -59,6 +59,26 @@
         .flowchart-arrow {
             color: #93c5fd;
         }
+        .gemini-btn {
+            background-color: #eef2ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
+        }
+        .gemini-btn:hover {
+            background-color: #e0e7ff;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -88,17 +108,26 @@
             <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">中国经济已从高速增长平台放缓至5%左右的“新常态”。以下图表揭示了增长放缓、工业承压和投资结构剧变的核心趋势。</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="kpi-card">
-                    <h3 class="font-bold text-lg mb-2 text-slate-700">GDP增速：放缓的轨迹</h3>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-slate-700">GDP增速：放缓的轨迹</h3>
+                        <button class="gemini-btn text-xs font-semibold py-1 px-3 rounded-full" data-prompt-type="chart-analysis" data-chart-id="gdpGrowthChart">✨ AI 解读</button>
+                    </div>
                     <p class="text-sm text-slate-500 mb-4">经济增长进入中速平台，后疫情时代的复苏基础尚不稳固。</p>
                     <div class="chart-container"><canvas id="gdpGrowthChart"></canvas></div>
                 </div>
                 <div class="kpi-card">
-                    <h3 class="font-bold text-lg mb-2 text-slate-700">价格之谜：CPI与PPI的鸿沟</h3>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-slate-700">价格之谜：CPI与PPI的鸿沟</h3>
+                         <button class="gemini-btn text-xs font-semibold py-1 px-3 rounded-full" data-prompt-type="chart-analysis" data-chart-id="priceIndexChart">✨ AI 解读</button>
+                    </div>
                     <p class="text-sm text-slate-500 mb-4">生产者价格(PPI)持续为负，而消费者价格(CPI)低迷，严重挤压企业利润。</p>
                     <div class="chart-container"><canvas id="priceIndexChart"></canvas></div>
                 </div>
                 <div class="kpi-card lg:col-span-2">
-                    <h3 class="font-bold text-lg mb-2 text-slate-700">投资的冰与火：房地产 vs. 高技术</h3>
+                     <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-slate-700">投资的冰与火：房地产 vs. 高技术</h3>
+                        <button class="gemini-btn text-xs font-semibold py-1 px-3 rounded-full" data-prompt-type="chart-analysis" data-chart-id="investmentDivergenceChart">✨ AI 解读</button>
+                    </div>
                     <p class="text-sm text-slate-500 mb-4">固定资产投资增速放缓的核心在于其内部分化：房地产开发投资断崖式下跌，而高技术产业投资逆势上扬。</p>
                     <div class="chart-container"><canvas id="investmentDivergenceChart"></canvas></div>
                 </div>
@@ -110,7 +139,10 @@
             <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">驱动中国经济的“三驾马车”角色发生根本性变化。昔日首要引擎——投资——已然熄火，消费被寄予厚望，但步履蹒跚。</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div class="kpi-card">
-                    <h3 class="font-bold text-lg mb-2 text-slate-700">对GDP增长的贡献率</h3>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-slate-700">对GDP增长的贡献率</h3>
+                         <button class="gemini-btn text-xs font-semibold py-1 px-3 rounded-full" data-prompt-type="chart-analysis" data-chart-id="gdpContributionChart">✨ AI 解读</button>
+                    </div>
                     <p class="text-sm text-slate-500 mb-4">消费（蓝色）已成为拉动增长的绝对主力，而投资（灰色）贡献率显著下降。</p>
                     <div class="chart-container"><canvas id="gdpContributionChart"></canvas></div>
                 </div>
@@ -133,16 +165,22 @@
 
         <section id="human-cost" class="mb-16 scroll-mt-24">
             <h2 class="text-3xl font-bold text-center mb-4 text-slate-900">消费与信心：宏观逆风下的微观感受</h2>
-            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">宏观经济的挑战最终传导至微观个体。消费者信心的崩溃和消费降级，是当前经济最真实的写照，在烟酒等行业表现得淋漓尽尽致。</p>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10">宏观经济的挑战最终传导至微观个体。消费者信心的崩溃和消费降级，是当前经济最真实的写照，在烟酒等行业表现得淋漓尽致。</p>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
                 <div class="kpi-card lg:col-span-3">
-                    <h3 class="font-bold text-lg mb-2 text-slate-700">消费者信心：断崖式下跌</h3>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-slate-700">消费者信心：断崖式下跌</h3>
+                        <button class="gemini-btn text-xs font-semibold py-1 px-3 rounded-full" data-prompt-type="chart-analysis" data-chart-id="consumerConfidenceChart">✨ AI 解读</button>
+                    </div>
                     <p class="text-sm text-slate-500 mb-4">消费者信心自2022年起急剧下挫并长期处于悲观区间（100以下），形成了抑制消费的“信心陷阱”。</p>
                     <div class="chart-container"><canvas id="consumerConfidenceChart"></canvas></div>
                 </div>
                 <div class="kpi-card lg:col-span-2">
-                    <h3 class="font-bold text-lg mb-4 text-slate-700">零售终端的挑战</h3>
-                     <div class="space-y-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-slate-700">零售终端的挑战</h3>
+                        <button class="gemini-btn text-xs font-semibold py-1 px-3 rounded-full" data-prompt-type="strategy-generation">✨ 生成应对策略</button>
+                    </div>
+                     <div class="space-y-6 mt-4">
                         <div class="flex items-start">
                             <div class="text-3xl mr-4">🍷</div>
                             <div>
@@ -226,7 +264,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 
     <footer class="bg-slate-800 text-white mt-16 py-8">
@@ -236,7 +273,26 @@
         </div>
     </footer>
 
+    <!-- Gemini Modal -->
+    <div id="gemini-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 md:w-2/3 lg:w-1/2 max-w-4xl max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 id="modal-title" class="text-lg font-bold text-slate-800">✨ AI 深度解读</h3>
+                <button id="modal-close-btn" class="text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div id="modal-content" class="p-6 overflow-y-auto">
+                <div class="flex items-center justify-center h-48">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
+        // Chart instances storage
+        const charts = {};
+
         const tooltipTitleCallback = (tooltipItems) => {
             const item = tooltipItems[0];
             let label = item.chart.data.labels[item.dataIndex];
@@ -272,7 +328,7 @@
 
         const years = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2025 H1'];
         
-        new Chart(document.getElementById('gdpGrowthChart'), {
+        charts.gdpGrowthChart = new Chart(document.getElementById('gdpGrowthChart'), {
             type: 'line',
             data: {
                 labels: years,
@@ -289,7 +345,7 @@
         });
 
         const priceYears = ['2022.01', '2022.07', '2023.01', '2023.07', '2024.01', '2024.07', '2025.01', '2025.07'];
-        new Chart(document.getElementById('priceIndexChart'), {
+        charts.priceIndexChart = new Chart(document.getElementById('priceIndexChart'), {
             type: 'line',
             data: {
                 labels: priceYears,
@@ -309,7 +365,7 @@
         });
 
         const investmentYears = ['2021', '2022', '2023', '2025 H1'];
-        new Chart(document.getElementById('investmentDivergenceChart'), {
+        charts.investmentDivergenceChart = new Chart(document.getElementById('investmentDivergenceChart'), {
             type: 'bar',
             data: {
                 labels: investmentYears,
@@ -335,7 +391,7 @@
         });
 
         const contributionYears = ['2019', '2021', '2022', '2023'];
-        new Chart(document.getElementById('gdpContributionChart'), {
+        charts.gdpContributionChart = new Chart(document.getElementById('gdpContributionChart'), {
             type: 'bar',
             data: {
                 labels: contributionYears,
@@ -357,7 +413,7 @@
         });
         
         const confidenceYears = ['2021.Q1', '2021.Q4', '2022.Q2', '2022.Q4', '2023.Q2', '2023.Q4', '2024.Q2', '2025.Q2'];
-        new Chart(document.getElementById('consumerConfidenceChart'), {
+        charts.consumerConfidenceChart = new Chart(document.getElementById('consumerConfidenceChart'), {
             type: 'line',
             data: {
                 labels: confidenceYears,
@@ -415,6 +471,97 @@
                 this.classList.add('active');
             });
         });
+
+        // Gemini API Integration
+        const modal = document.getElementById('gemini-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const loadingSpinner = `<div class="flex items-center justify-center h-48"><div class="loader"></div></div>`;
+
+        function showModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modalContent.innerHTML = loadingSpinner;
+        }
+
+        function hideModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        modalCloseBtn.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        async function callGemini(prompt) {
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                     return "抱歉，无法从AI获取有效的分析结果。";
+                }
+            } catch (error) {
+                console.error("Gemini API call error:", error);
+                return "抱歉，连接AI服务时发生错误。请稍后再试。";
+            }
+        }
+
+        document.querySelectorAll('.gemini-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                const promptType = button.dataset.promptType;
+                let prompt = '';
+                let title = '';
+
+                if (promptType === 'chart-analysis') {
+                    const chartId = button.dataset.chartId;
+                    const chartInstance = charts[chartId];
+                    const chartTitle = button.previousElementSibling.textContent;
+                    const chartDescription = button.parentElement.nextElementSibling.textContent;
+                    
+                    const dataSummary = chartInstance.data.datasets.map(ds => 
+                        `${ds.label}: ${ds.data.join(', ')}`
+                    ).join('; ');
+
+                    title = `✨ AI 解读: ${chartTitle}`;
+                    prompt = `你是一位资深的中国经济分析师。请根据以下图表信息，提供一段简洁、专业、深入的分析。请解释数据反映的核心趋势，分析其背后的主要原因，并指出其对中国经济的潜在影响。请以中文回答。
+
+                    图表标题: ${chartTitle}
+                    图表简介: ${chartDescription}
+                    核心数据: ${dataSummary}`;
+
+                } else if (promptType === 'strategy-generation') {
+                    title = '✨ 零售行业应对策略';
+                    prompt = `你是一位顶级的商业战略顾问，专长于中国消费品市场。当前，中国的烟酒零售终端面临巨大挑战：高端产品价格倒挂、渠道库存积压严重、客流量减少、利润微薄。请为一家典型的中小型烟酒零售商，生成3到5条具有创新性和可操作性的应对策略。请重点围绕数字化转型、客户关系管理、新业务模式和提升体验等方面展开。请以要点形式，用中文回答。`;
+                }
+                
+                if (prompt) {
+                    modalTitle.textContent = title;
+                    showModal();
+                    const result = await callGemini(prompt);
+                    modalContent.innerHTML = `<div class="prose max-w-none text-slate-600">${result.replace(/\n/g, '<br>')}</div>`;
+                }
+            });
+        });
+
     </script>
 </body>
 </html>
